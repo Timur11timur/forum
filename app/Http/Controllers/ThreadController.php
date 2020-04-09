@@ -43,12 +43,12 @@ class ThreadController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Thread  $tread
+     * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function show(Thread $tread)
+    public function show(Thread $thread)
     {
-        //
+        return view('thread.show', compact('thread'));
     }
 
     /**
