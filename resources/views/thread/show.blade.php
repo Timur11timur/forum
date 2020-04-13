@@ -38,7 +38,7 @@
                 </div>
             </div>
         @else
-            <p class="text-center">Please <a href="{{ route('login') }}">sing in</a> to participate in this discussion.</p>
+            <p class="text-center mt-3">Please <a href="{{ route('login') }}">sing in</a> to participate in this discussion.</p>
         @endif
     </div>
 @endsection
