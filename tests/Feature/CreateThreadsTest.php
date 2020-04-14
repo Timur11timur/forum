@@ -19,11 +19,7 @@ class CreateThreadsTest extends TestCase
 
         $this->post('/threads', $thread->toArray())
             ->assertRedirect('login');
-    }
 
-    /** @test */
-    public function guests_cannot_see_the_create_thread_page()
-    {
         $this->get('/threads/create')
             ->assertRedirect('login');
     }
@@ -33,7 +29,7 @@ class CreateThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $thread = make(Thread::class);
+        $thread = factory(Thread::class)->create();
 
         $this->post('/threads', $thread->toArray());
 
