@@ -45,7 +45,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="/threads?by={{ auth()->user()->name }}">My Threads</a>
                                     </li>
-                                §@endif
+                                @endif
                             </ul>
                         </li>
 
