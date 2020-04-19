@@ -25,7 +25,7 @@ class Thread extends Model
 
     public function channel()
     {
-        return $this->belongsTo(Channel::class, 'user_id');
+        return $this->belongsTo(Channel::class, 'channel_id');
     }
 
     public function addReply($reply)
