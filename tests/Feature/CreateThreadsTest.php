@@ -16,7 +16,7 @@ class CreateThreadsTest extends TestCase
     /** @test */
     public function guests_may_not_create_threads()
     {
-        $thread = make(Thread::class);
+        $thread = factory(Thread::class)->make();
 
         $this->post('/threads', $thread->toArray())
             ->assertRedirect('login');
