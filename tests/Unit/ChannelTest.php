@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use App\Channel;
 use App\Thread;
-use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
