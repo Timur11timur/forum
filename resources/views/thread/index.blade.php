@@ -4,22 +4,18 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Forum Threads</div>
+                @foreach($threads as $thread)
+                    <div class="card mb-3">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0"><a href="{{ $thread->path() }}">{{ $thread->title }}</a></h4>
+                            <a href="{{ $thread->path() }}">{{ $thread->replies_count }} {{ Str::plural('reply', $thread->replies_count) }}</a>
+                        </div>
 
-                    <div class="card-body">
-                        @foreach($threads as $thread)
-                            <acticle>
-                                <div class="d-flex justify-content-between">
-                                    <h4><a href="{{ $thread->path() }}">{{ $thread->title }}</a></h4>
-                                    <a href="{{ $thread->path() }}">{{ $thread->replies_count }} {{ Str::plural('reply', $thread->replies_count) }}</a>
-                                </div>
-                                <div>{{ $thread->body }}</div>
-                            </acticle>
-                            <hr />
-                        @endforeach
+                        <div class="card-body">
+                            {{ $thread->body }}
+                        </div>
                     </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>

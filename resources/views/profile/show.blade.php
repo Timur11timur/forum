@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-between">
+        <div class="row d-flex justify-content-center">
             <div class="col-md-8">
                 <div class="page-header">
                     <h1>{{ $profileUser->name }}

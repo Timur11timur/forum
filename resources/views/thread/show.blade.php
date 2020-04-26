@@ -5,9 +5,19 @@
         <div class="row justify-content-between">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">
-                        <a href="{{ route('profile', $thread->creator) }}">{{ $thread->creator->name }}</a> posted:
-                        {{ $thread->title }}
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>
+                            <a href="{{ route('profile', $thread->creator) }}">{{ $thread->creator->name }}</a> posted:
+                            {{ $thread->title }}
+                        </span>
+
+                        @if (Auth::check())
+                            <form action="{{ $thread->path() }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-link">Delete Thread</button>
+                            </form>
+                        @endif
                     </div>
 
                     <div class="card-body">

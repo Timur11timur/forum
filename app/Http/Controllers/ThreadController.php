@@ -90,10 +90,10 @@ class ThreadController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Thread  $tread
+     * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function edit(Thread $tread)
+    public function edit(Thread $thread)
     {
         //
     }
@@ -102,23 +102,29 @@ class ThreadController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Thread  $tread
+     * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Thread $tread)
+    public function update(Request $request, Thread $thread)
     {
         //
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Thread  $tread
-     * @return \Illuminate\Http\Response
+     * @param $channel
+     * @param Thread $thread
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function destroy(Thread $tread)
+    public function destroy($channel, Thread $thread)
     {
-        //
+        $thread->delete();
+
+        if (\request()->wantsJson()) {
+            return response([], 204);
+        }
+
+        return redirect('/threads');
     }
 
     /**
