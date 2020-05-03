@@ -11,7 +11,20 @@ class ProfilesController extends Controller
     {
         return view('profile.show', [
             'profileUser' => $user,
-            'threads' => $user->threads()->paginate(20)
+            'activities' => $this->getActivity($user)
         ]);
+    }
+
+    /**
+     * @param User $user
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    protected function getActivity(User $user): \Illuminate\Database\Eloquent\Collection
+    {
+        $activities = $user->activity()->with('subject')->take(50)->get()->groupBy(function ($activity) {
+            return $activity->created_at->format('Y-m-d');
+        });
+
+        return $activities;
     }
 }
