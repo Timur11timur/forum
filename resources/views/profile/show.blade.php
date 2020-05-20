@@ -5,13 +5,15 @@
         <div class="row d-flex justify-content-center">
             <div class="col-md-8">
                 <div class="page-header">
-                    <h1>{{ $profileUser->name }}
+                    <h1>{{ $profileUser->name }}</h1>
                 </div>
                 <hr />
                 @foreach($activities as $date => $activity)
                     <h3>{{ $date }}</h3>
                     @foreach($activity as $record)
-                        @include("profile.activities.{$record->type}", ['activity' => $record])
+                        @if (view()->exists("profile.activities.{$record->type}"))
+                            @include("profile.activities.{$record->type}", ['activity' => $record])
+                        @endif
                     @endforeach
                 @endforeach
             </div>
