@@ -30,7 +30,8 @@ Route::delete('/threads/{channel}/{thread}', 'ThreadController@destroy');
 Route::post('/threads', 'ThreadController@store');
 Route::get('/threads/{channel}', 'ThreadController@index');
 Route::post('/threads/{channel}/{thread}/replies', 'ReplyController@store');
+Route::delete('/replies/{reply}', 'ReplyController@destroy');
 Route::post('/replies/{reply}/favorites', 'FavoriteController@store');
 
-Route::get('/profiles/{user}', 'ProfilesController@show')->name('profile');
+Route::get('/profiles/{user}', 'ProfileController@show')->name('profile');
 

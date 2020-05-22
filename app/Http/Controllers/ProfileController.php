@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Activity;
 use App\User;
-use Illuminate\Http\Request;
 
-class ProfilesController extends Controller
+class ProfileController extends Controller
 {
     public function show(User $user)
     {
