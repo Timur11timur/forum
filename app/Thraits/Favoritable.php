@@ -16,14 +16,14 @@ trait Favoritable
 
     public function favorite()
     {
-        $attributes = ['user_id' => auth()->user()->id];
+        $attributes = ['user_id' => auth()->id()];
         if (! $this->favorites()->where($attributes)->exists())
             return $this->favorites()->create($attributes);
     }
 
     public function isFavorited()
     {
-        return !! $this->favorites->where('user_id', auth()->user()->id)->count();
+        return !! $this->favorites->where('user_id', auth()->id())->count();
     }
 
     public function getFavoritesCountAttribute()

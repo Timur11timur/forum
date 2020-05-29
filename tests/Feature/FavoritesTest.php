@@ -6,7 +6,7 @@ use App\Reply;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class FavorivesTest extends TestCase
+class FavoritesTest extends TestCase
 {
     use RefreshDatabase;
 
