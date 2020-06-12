@@ -3,12 +3,15 @@
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">
-                    <a href="{{ route('profile', $reply->owner) }}">{{ $reply->owner->name }}</a> said {{ $reply->created_at->diffForHumans() }}...
+                    <a href="{{ route('profile', $reply->owner) }}">{{ $reply->owner->name }}</a>
+                    said {{ $reply->created_at->diffForHumans() }}...
                 </h5>
 
-                <div>
-                    <favorite :reply="{{ $reply }}"></favorite>
-                </div>
+                @if (Auth::check())
+                    <div>
+                        <favorite :reply="{{ $reply }}"></favorite>
+                    </div>
+                @endif
             </div>
         </div>
         <div class="card-body">
