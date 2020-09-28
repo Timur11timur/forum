@@ -9,17 +9,6 @@ use App\Thread;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
-
 $factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
@@ -60,5 +49,17 @@ $factory->define(Reply::class, function (Faker $faker) {
             return factory(User::class)->create()->id;
         },
         'body' => $faker->paragraph,
+    ];
+});
+
+$factory->define(\Illuminate\Notifications\DatabaseNotification::class, function (Faker $faker) {
+    return [
+        'id' => Str::uuid()->toString(),
+        'type' => 'App\Notifications\ThreadWasUpdated',
+        'notifiable_id' => function () {
+            return auth()->id() ?: factory(User::class)->create()->id;
+        },
+        'notifiable_type' => 'App\User',
+        'data' => ['foo' => 'bar']
     ];
 });
