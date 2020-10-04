@@ -7,7 +7,14 @@
                 @forelse($threads as $thread)
                     <div class="card mb-3">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="mb-0"><a href="{{ $thread->path() }}">{{ $thread->title }}</a></h4>
+                            <h4 class="mb-0">
+                                <a href="{{ $thread->path() }}">
+                                    @if($thread->hasUpdatesFor(auth()->user()))
+                                        <span class="text-dark">{{ $thread->title }}</span>
+                                    @else
+                                        {{ $thread->title }}
+                                @endif
+                                </a></h4>
                             <a href="{{ $thread->path() }}">{{ $thread->replies_count }} {{ Str::plural('reply', $thread->replies_count) }}</a>
                         </div>
 

@@ -2,9 +2,9 @@
 
 namespace App;
 
-use App\Events\ThreadHasNewReply;
 use App\Thraits\RecordsActivity;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Thread extends Model
 {
@@ -93,5 +93,12 @@ class Thread extends Model
     public function getIsSubscribedToAttribute()
     {
         return $this->subscriptions()->where('user_id', auth()->id())->exists();
+    }
+
+    public function hasUpdatesFor($user)
+    {
+        $key = $user->visitedThreadCacheKey($this);
+
+        return $this->updated_at > Cache::get($key);
     }
 }
