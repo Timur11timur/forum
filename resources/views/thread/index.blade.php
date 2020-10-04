@@ -9,7 +9,7 @@
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h4 class="mb-0">
                                 <a href="{{ $thread->path() }}">
-                                    @if($thread->hasUpdatesFor(auth()->user()))
+                                    @if(auth()->check() && $thread->hasUpdatesFor(auth()->user()))
                                         <span class="text-dark">{{ $thread->title }}</span>
                                     @else
                                         {{ $thread->title }}
