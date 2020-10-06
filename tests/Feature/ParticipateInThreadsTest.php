@@ -106,8 +106,6 @@ class ParticipateInThreadsTest extends TestCase
     /** @test */
     public function replies_that_contains_spam_may_not_be_created()
     {
-        $this->withoutExceptionHandling();
-
         $this->signIn();
 
         $thread = factory(Thread::class)->create();
@@ -115,5 +113,20 @@ class ParticipateInThreadsTest extends TestCase
         $reply = factory(Reply::class)->make(['body' => 'Yahoo Customer Support']);
 
         $this->post($thread->path() . '/replies', $reply->toArray())->assertStatus(422);
+    }
+
+    /** @test */
+    public function users_may_only_reply_a_maximum_of_once_per_minute()
+    {
+        $this->signIn();
+
+        $thread = factory(Thread::class)->create();
+
+        $reply = factory(Reply::class)->make(['body' => 'My simple reply']);
+
+        $this->post($thread->path() . '/replies', $reply->toArray())->assertStatus(200);
+
+        $this->post($thread->path() . '/replies', $reply->toArray())->assertStatus(422);
+
     }
 }
