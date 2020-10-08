@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreatePostRequest;
+use App\Notifications\YouWereMentioned;
 use App\Reply;
 use App\Thread;
-use Illuminate\Support\Facades\Gate;
+use App\User;
 
 /**
  * Class ReplyController
@@ -34,14 +35,22 @@ class ReplyController extends Controller
      */
     public function store($channel, Thread $thread, CreatePostRequest $form)
     {
-//        if (Gate::denies('create', new Reply)) {
-//            return response('You are posting too frequently. Please take a break. :)', 429);
-//        }
-
         $reply = $thread->addReply([
             'body' => request('body'),
             'user_id' => auth()->user()->id
         ]);
+
+        preg_match_all('/\@([^\s\.]+)/', $reply->body, $matches);
+
+        $names = $matches[1];
+
+        foreach ($names as $name) {
+            $user = User::whereName($name)->first();
+
+            if($user) {
+                $user->notify(new YouWereMentioned($reply));
+            }
+        }
 
         return $reply->load('owner');
     }
