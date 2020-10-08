@@ -45,7 +45,8 @@ class ParticipateInThreadsTest extends TestCase
 
         $reply = factory(Reply::class)->make(['body' => null]);
 
-        $this->post($thread->path() . '/replies', $reply->toArray())->assertStatus(422);
+        $this->post($thread->path() . '/replies', $reply->toArray())->assertStatus(302);
+        $this->json('post', $thread->path() . '/replies', $reply->toArray())->assertStatus(422);
     }
 
     /** @test */
@@ -112,7 +113,7 @@ class ParticipateInThreadsTest extends TestCase
 
         $reply = factory(Reply::class)->make(['body' => 'Yahoo Customer Support']);
 
-        $this->post($thread->path() . '/replies', $reply->toArray())->assertStatus(422);
+        $this->json('post', $thread->path() . '/replies', $reply->toArray())->assertStatus(422);
     }
 
     /** @test */
@@ -126,6 +127,6 @@ class ParticipateInThreadsTest extends TestCase
 
          $this->post($thread->path() . '/replies', $reply->toArray())->assertStatus(201);
 
-        $this->post($thread->path() . '/replies', $reply->toArray())->assertStatus(422);
+        $this->post($thread->path() . '/replies', $reply->toArray())->assertStatus(429);
     }
 }
