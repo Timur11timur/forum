@@ -124,9 +124,8 @@ class ParticipateInThreadsTest extends TestCase
 
         $reply = factory(Reply::class)->make(['body' => 'My simple reply']);
 
-        $this->post($thread->path() . '/replies', $reply->toArray())->assertStatus(200);
+         $this->post($thread->path() . '/replies', $reply->toArray())->assertStatus(201);
 
         $this->post($thread->path() . '/replies', $reply->toArray())->assertStatus(422);
-
     }
 }
