@@ -11,6 +11,6 @@ class UserController extends Controller
     {
         $search = request('name');
 
-        return User::where('name', 'LIKE', "$search%")->take(5)->pluck('name ')->get();
+        return User::where('name', 'like', "$search%")->take(5)->pluck('name');
     }
 }

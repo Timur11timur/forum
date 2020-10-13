@@ -4,6 +4,7 @@
             <div class="form-group">
                 <textarea
                     name="body"
+                    id="body"
                     class="form-control"
                     placeholder="Have something to say?"
                     rows="5"
@@ -40,9 +41,10 @@
         mounted() {
             $('#body').atwho({
                 at: "@",
-                dela: 750,
+                delay: 750,
                 callbacks: {
                     remoteFilter: function (query, callback) {
+                        console.log('3232323');
                         $.getJSON("/api/users", {name: query}, function (username) {
                             callback(username)
                         });

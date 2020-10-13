@@ -3264,6 +3264,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3280,9 +3281,10 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     $('#body').atwho({
       at: "@",
-      dela: 750,
+      delay: 750,
       callbacks: {
         remoteFilter: function remoteFilter(query, callback) {
+          console.log('3232323');
           $.getJSON("/api/users", {
             name: query
           }, function (username) {
@@ -61623,6 +61625,7 @@ var render = function() {
               staticClass: "form-control",
               attrs: {
                 name: "body",
+                id: "body",
                 placeholder: "Have something to say?",
                 rows: "5",
                 required: ""
