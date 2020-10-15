@@ -7,6 +7,8 @@ use App\Channel;
 use App\Reply;
 use App\Thread;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class AddAvatarTest extends TestCase
@@ -16,7 +18,8 @@ class AddAvatarTest extends TestCase
     /** @test */
     public function only_members_can_add_avatars()
     {
-        $this->json('POST', 'api/users/{user_id}/avatar')->assertStatus(401);
+        $this->json('POST', 'api/users/{user_id}/avatar')
+            ->assertStatus(401);
     }
 
     /** @test */
@@ -32,6 +35,18 @@ class AddAvatarTest extends TestCase
     /** @test */
     public function a_user_may_add_an_avatar_to_their_profile()
     {
+        $this->signIn();
 
+        Storage::fake('public');
+
+        $file = UploadedFile::fake()->image('avatar.jpg');
+
+        $this->json('POST', 'api/users/' . auth()->id() . '/avatar', [
+            'avatar' => $file
+        ]);
+
+        Storage::disk('public')->assertExists('avatars/' . $file->hashName());
+
+        $this->assertEquals('avatars/' . $file->hashName(), auth()->user()->avatar_path);
     }
 }
