@@ -63,15 +63,9 @@ class User extends Authenticatable
         Cache::put($this->visitedThreadCacheKey($thread), Carbon::now());
     }
 
-    public function avatar()
+    public function getAvatarPathAttribute($avatar)
     {
-        return asset('storage/' . ($this->avatar_path ?: 'avatars/default.jpg'));
-
-//        if (!$this->avatar_path) {
-//            return 'storage/avatars/default.jpg';
-//        }
-//
-//        return 'storage/' . $this->avatar_path;
+        return asset('storage/' . ($avatar ?: 'avatars/default.jpg'));
     }
 
     public function visitedThreadCacheKey($thread)
