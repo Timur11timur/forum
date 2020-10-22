@@ -61623,17 +61623,23 @@ var render = function() {
   return _c("div", [
     _c("div", { staticClass: "d-flex align-items-center" }, [
       _c("img", {
-        staticClass: "mr-1",
+        staticClass: "mr-2",
         attrs: { src: _vm.avatar, width: "50", height: "50" }
       }),
       _vm._v(" "),
-      _c("h1", { domProps: { textContent: _vm._s(_vm.user.name) } })
+      _c("h1", {
+        staticClass: "mb-0",
+        domProps: { textContent: _vm._s(_vm.user.name) }
+      })
     ]),
     _vm._v(" "),
     _vm.canUpdate
       ? _c(
           "form",
-          { attrs: { method: "POST", enctype: "multipart/form-data" } },
+          {
+            staticClass: "mt-1",
+            attrs: { method: "POST", enctype: "multipart/form-data" }
+          },
           [
             _c("image-upload", {
               staticClass: "mr-1",

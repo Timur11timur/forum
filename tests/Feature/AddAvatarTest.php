@@ -2,10 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Activity;
-use App\Channel;
-use App\Reply;
-use App\Thread;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;

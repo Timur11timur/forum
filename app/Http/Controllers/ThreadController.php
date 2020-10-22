@@ -6,6 +6,7 @@ use App\Channel;
 use App\Filters\ThreadFilters;
 use App\Thread;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 
 /**
  * Class ThreadController
@@ -36,7 +37,9 @@ class ThreadController extends Controller
             return $threads;
         }
 
-        return view('thread.index', compact('threads'));
+        $treandings = array_map('json_decode', Redis::zrevrange('trending_threads', 0, 4));
+
+        return view('thread.index', compact('threads', 'treandings'));
     }
 
     /**
@@ -71,7 +74,7 @@ class ThreadController extends Controller
             'body' => request('body'),
         ]);
 
-       return redirect($thread->path())->with('flash', 'Your thread has been published!');
+        return redirect($thread->path())->with('flash', 'Your thread has been published!');
     }
 
     /**
@@ -85,13 +88,18 @@ class ThreadController extends Controller
             auth()->user()->read($thread);
         }
 
+        Redis::zincrby('trending_threads', 1, json_encode([
+            'title' => $thread->title,
+            'path' => $thread->path()
+        ]));
+
         return view('thread.show', compact('thread'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Thread  $thread
+     * @param \App\Thread $thread
      * @return \Illuminate\Http\Response
      */
     public function edit(Thread $thread)
@@ -102,8 +110,8 @@ class ThreadController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Thread  $thread
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Thread $thread
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Thread $thread)

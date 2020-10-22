@@ -13,7 +13,7 @@
                         <div class="card-header d-flex justify-content-between align-items-center py-1">
                             <span class="d-flex align-items-center">
                                 <img src="{{ $thread->creator->avatar_path }}"
-                                     alt="{{ $thread->creator->name }}" width="25" height="25" class="mr-1">
+                                     alt="{{ $thread->creator->name }}" width="25" height="25" class="mr-2">
                                 <span>
                                     <a href="{{ route('profile', $thread->creator) }}">{{ $thread->creator->name }}</a> posted:
                                     {{ $thread->title }}
