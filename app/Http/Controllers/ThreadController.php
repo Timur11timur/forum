@@ -93,7 +93,7 @@ class ThreadController extends Controller
 
         $trending->push($thread);
 
-        $thread->recordVisits();
+        $thread->increment('visits');
 
         return view('thread.show', compact('thread'));
     }
