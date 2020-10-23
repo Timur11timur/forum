@@ -4,13 +4,12 @@ namespace App;
 
 use App\Event\ThreadReceivedNewReply;
 use App\Traits\RecordsActivity;
-use App\Traits\RecordsVisits;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
 class Thread extends Model
 {
-    use RecordsActivity, RecordsVisits;
+    use RecordsActivity;
 
     protected $guarded = [];
 
@@ -95,5 +94,10 @@ class Thread extends Model
         $key = $user->visitedThreadCacheKey($this);
 
         return $this->updated_at > Cache::get($key);
+    }
+
+    public function visits()
+    {
+        return new Visits($this);
     }
 }
