@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Thraits;
+namespace App\Traits;
 
 
 use App\Favorite;

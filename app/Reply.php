@@ -2,15 +2,14 @@
 
 namespace App;
 
-use App\Thraits\Favoritable;
-use App\Thraits\RecordsActivity;
+use App\Traits\Favoritable;
+use App\Traits\RecordsActivity;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
 {
-    use Favoritable;
-    use RecordsActivity;
+    use Favoritable, RecordsActivity;
 
     protected $guarded = [];
 

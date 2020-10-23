@@ -9,6 +9,7 @@ use App\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Redis;
 use Tests\TestCase;
 
 class ThreadTest extends TestCase
@@ -123,6 +124,25 @@ class ThreadTest extends TestCase
         $user->read($thread);
 
         $this->assertFalse($thread->hasUpdatesFor($user));
+
+    }
+
+    /** @test */
+    public function a_thread_records_each_visit()
+    {
+        $thread = factory(Thread::class)->make(['id' => 1]);
+
+        $thread->resetVisits();
+
+        $this->assertSame(0, $thread->visits());
+
+        $thread->recordVisits();
+
+        $this->assertEquals(1, $thread->visits());
+
+        $thread->recordVisits();
+
+        $this->assertEquals(2, $thread->visits());
 
     }
 }

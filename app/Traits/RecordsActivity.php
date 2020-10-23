@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Thraits;
+namespace App\Traits;
 
 use App\Activity;
 
@@ -47,11 +47,6 @@ trait RecordsActivity
         return $this->morphMany(Activity::class, 'subject');
     }
 
-    /**
-     * @param $event
-     * @return string
-     * @throws \ReflectionException
-     */
     protected function getActivityType($event): string
     {
         return $event . '_' . strtolower((new \ReflectionClass($this))->getShortName());
