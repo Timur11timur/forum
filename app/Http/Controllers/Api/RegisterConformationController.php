@@ -9,9 +9,15 @@ class RegisterConformationController extends Controller
 {
     public function index()
     {
-        $user = User::where('confirmation_token', request('token'))
-            ->firstOrFail()->confirm();
+        try {
+            $user = User::where('confirmation_token', request('token'))
+                ->firstOrFail()->confirm();
+        } catch (\Exception $e) {
+            return redirect(route('threads'))
+                ->with('flash', 'Unknown token.');
+        }
 
-        return redirect('/threads')->with('flash', 'Your account is now confirmed! You may post to the forum.');
+        return redirect(route('threads'))
+            ->with('flash', 'Your account is now confirmed! You may post to the forum.');
     }
 }

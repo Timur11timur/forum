@@ -22,7 +22,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/threads', 'ThreadController@index');
+Route::get('/threads', 'ThreadController@index')->name('threads');
 Route::get('/threads/create', 'ThreadController@create');
 Route::post('/threads', 'ThreadController@store');
 Route::get('/threads/{channel}/{thread}', 'ThreadController@show');
@@ -44,7 +44,7 @@ Route::get('/profiles/{user}', 'ProfileController@show')->name('profile');
 Route::get('/profiles/{user}/notifications', 'UserNotificationsController@index');
 Route::delete('/profiles/{user}/notifications/{notification}', 'UserNotificationsController@destroy');
 
-Route::get('/register/confirm', 'Api\RegisterConformationController@index');
+Route::get('/register/confirm', 'Api\RegisterConformationController@index')->name('register.confirm');
 
 Route::get('api/users', 'Api\UserController@index');
 Route::post('api/users/{user_id}/avatar', 'Api\UserAvatarController@store')->middleware('auth')->name('avatar');
