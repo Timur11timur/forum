@@ -22,7 +22,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'avatar_path',
+        'name', 'email', 'password', 'avatar_path', 'confirmed'
     ];
 
     /**
@@ -41,6 +41,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'confirmed' => 'boolean',
     ];
 
     public function threads()
@@ -56,6 +57,12 @@ class User extends Authenticatable
     public function activity()
     {
         return $this->hasMany(Activity::class)->latest();
+    }
+
+    public function confirm()
+    {
+        $this->confirmed = true;
+        $this->save();
     }
 
     public function read($thread)
