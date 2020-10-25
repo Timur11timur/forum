@@ -74,7 +74,7 @@ class ThreadController extends Controller
             'user_id' => auth()->user()->id,
             'channel_id' => request('channel_id'),
             'title' => request('title'),
-            'slug' => Str::slug(request('title')),
+            'slug' => request('title'),
             'body' => request('body'),
         ]);
 
