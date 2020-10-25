@@ -7,6 +7,7 @@ use App\Filters\ThreadFilters;
 use App\Thread;
 use App\Trending;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 /**
  * Class ThreadController
@@ -73,6 +74,7 @@ class ThreadController extends Controller
             'user_id' => auth()->user()->id,
             'channel_id' => request('channel_id'),
             'title' => request('title'),
+            'slug' => Str::slug(request('title')),
             'body' => request('body'),
         ]);
 
