@@ -27,6 +27,10 @@ class Thread extends Model
                 $reply->delete();
             });
         });
+
+        static::created(function ($thread) {
+            $thread->update(['slug' => $thread->title]);
+        });
     }
 
     public function path()
@@ -107,22 +111,18 @@ class Thread extends Model
         $slug = Str::slug($value);
 
         if (static::where('slug', $slug)->exists()) {
-            $slug = $this->incrementSlug($slug);
+            $slug = $slug . '-' . $this->id;
         }
 
         $this->attributes['slug'] = $slug;
-    }
 
-    private function incrementSlug($slug)
-    {
-        $max = static::where('title', $this->title)->latest('id')->value('slug');
-
-        if (is_numeric($max[-1])) {
-            return preg_replace_callback('/(\d+)$/', function ($matches) {
-                return $matches[1] + 1;
-            }, $max);
-        }
-
-        return "{$slug}-2";
+//        $slug = Str::slug($value);
+//        $original = $slug;
+//        $count = 2;
+//        while (static::where('slug', $slug)->exists()) {
+//            $slug = $original . '-' . $count++;
+//        }
+//
+//        $this->attributes['slug'] = $slug;
     }
 }
