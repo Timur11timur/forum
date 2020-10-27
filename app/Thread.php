@@ -115,23 +115,10 @@ class Thread extends Model
         }
 
         $this->attributes['slug'] = $slug;
-
-//        $slug = Str::slug($value);
-//        $original = $slug;
-//        $count = 2;
-//        while (static::where('slug', $slug)->exists()) {
-//            $slug = $original . '-' . $count++;
-//        }
-//
-//        $this->attributes['slug'] = $slug;
     }
 
     public function markBestReply($reply)
     {
         $this->update(['best_reply_id'=> $reply->id]);
-
-        //$this->best_reply_id = $reply->id;
-
-       // $this->save();
     }
 }

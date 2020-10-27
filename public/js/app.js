@@ -3255,7 +3255,7 @@ __webpack_require__.r(__webpack_exports__);
   props: ['message'],
   data: function data() {
     return {
-      body: '',
+      body: this.message,
       level: 'success',
       show: false
     };
@@ -3264,7 +3264,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     if (this.message) {
-      this.flash(this.message);
+      this.flash();
     }
 
     window.events.$on('flash', function (data) {
@@ -3273,8 +3273,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     flash: function flash(data) {
-      this.body = data.message;
-      this.level = data.level;
+      if (data) {
+        this.body = data.message;
+        this.level = data.level;
+      }
+
       this.show = true;
       this.hide();
     },
@@ -3586,6 +3589,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3597,7 +3603,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       editing: false,
       id: this.data.id,
-      body: this.data.body
+      body: this.data.body,
+      isBest: false
     };
   },
   computed: {
@@ -3632,6 +3639,9 @@ __webpack_require__.r(__webpack_exports__);
     destroy: function destroy() {
       axios["delete"]('/replies/' + this.data.id);
       this.$emit('deleted', this.data.id);
+    },
+    markBestReply: function markBestReply() {
+      this.isBest = true;
     }
   }
 });
@@ -61637,7 +61647,7 @@ var render = function() {
       ? _c(
           "form",
           {
-            staticClass: "mt-1",
+            staticClass: "mt-2",
             attrs: { method: "POST", enctype: "multipart/form-data" }
           },
           [
@@ -62013,27 +62023,33 @@ var render = function() {
     "div",
     { staticClass: "card mt-2", attrs: { id: "reply-" + _vm.id } },
     [
-      _c("div", { staticClass: "card-header" }, [
-        _c(
-          "div",
-          { staticClass: "d-flex justify-content-between align-items-center" },
-          [
-            _c("h5", { staticClass: "mb-0" }, [
-              _c("a", {
-                attrs: { href: "/profiles/" + _vm.data.owner.name },
-                domProps: { textContent: _vm._s(_vm.data.owner.name) }
-              }),
-              _vm._v("\n                said "),
-              _c("span", { domProps: { textContent: _vm._s(_vm.ago) } }),
-              _vm._v("...\n            ")
-            ]),
-            _vm._v(" "),
-            _vm.signedIn
-              ? _c("div", [_c("favorite", { attrs: { reply: _vm.data } })], 1)
-              : _vm._e()
-          ]
-        )
-      ]),
+      _c(
+        "div",
+        { staticClass: "card-header", class: _vm.isBest ? "bg-success" : "" },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "d-flex justify-content-between align-items-center"
+            },
+            [
+              _c("h5", { staticClass: "mb-0" }, [
+                _c("a", {
+                  attrs: { href: "/profiles/" + _vm.data.owner.name },
+                  domProps: { textContent: _vm._s(_vm.data.owner.name) }
+                }),
+                _vm._v("\n                said "),
+                _c("span", { domProps: { textContent: _vm._s(_vm.ago) } }),
+                _vm._v("...\n            ")
+              ]),
+              _vm._v(" "),
+              _vm.signedIn
+                ? _c("div", [_c("favorite", { attrs: { reply: _vm.data } })], 1)
+                : _vm._e()
+            ]
+          )
+        ]
+      ),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
         _vm.editing
@@ -62085,31 +62101,50 @@ var render = function() {
           : _c("div", { domProps: { innerHTML: _vm._s(_vm.body) } })
       ]),
       _vm._v(" "),
-      _vm.canUpdate
-        ? _c("div", { staticClass: "card-footer d-flex" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-warning btn-sm mr-2",
-                on: {
-                  click: function($event) {
-                    _vm.editing = true
+      _c("div", { staticClass: "card-footer d-flex" }, [
+        _vm.canUpdate
+          ? _c("div", [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-warning btn-sm mr-2",
+                  on: {
+                    click: function($event) {
+                      _vm.editing = true
+                    }
                   }
-                }
-              },
-              [_vm._v("Edit")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
+                },
+                [_vm._v("Edit")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-danger btn-sm",
+                  on: { click: _vm.destroy }
+                },
+                [_vm._v("Delete")]
+              )
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            directives: [
               {
-                staticClass: "btn btn-danger btn-sm",
-                on: { click: _vm.destroy }
-              },
-              [_vm._v("Delete")]
-            )
-          ])
-        : _vm._e()
+                name: "show",
+                rawName: "v-show",
+                value: !_vm.isBest,
+                expression: "! isBest"
+              }
+            ],
+            staticClass: "btn btn-default border btn-sm ml-auto",
+            on: { click: _vm.markBestReply }
+          },
+          [_vm._v("Best Reply?")]
+        )
+      ])
     ]
   )
 }
