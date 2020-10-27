@@ -27,7 +27,7 @@
         </div>
 
         <div class="card-footer d-flex">
-            <div v-if="canUpdate">
+            <div v-if="authorize('updateReply', reply)">
                 <button class="btn btn-warning btn-sm mr-2" @click="editing = true">Edit</button>
                 <button class="btn btn-danger btn-sm" @click="destroy">Delete</button>
             </div>
@@ -40,7 +40,6 @@
     import Favorite from './Favorite.vue';
     import moment from 'moment';
 
-
     export default {
         props: ['data'],
 
@@ -51,22 +50,14 @@
                 editing: false,
                 id: this.data.id,
                 body: this.data.body,
-                isBest: false
+                isBest: false,
+                reply: this.data
             };
         },
 
         computed: {
             ago() {
                 return moment(this.data.created_at).fromNow();
-            },
-
-            signedIn() {
-                return window.App.signedIn;
-            },
-
-            canUpdate() {
-                return this.authorize(user => this.data.user_id == user.id);
-                //return this.data.user_id == window.App.user.id;
             }
         },
 

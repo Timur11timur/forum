@@ -3604,7 +3604,8 @@ __webpack_require__.r(__webpack_exports__);
       editing: false,
       id: this.data.id,
       body: this.data.body,
-      isBest: false
+      isBest: false,
+      reply: this.data
     };
   },
   computed: {
@@ -3613,18 +3614,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     signedIn: function signedIn() {
       return window.App.signedIn;
-    },
-    canUpdate: function canUpdate() {
-      var _this = this;
-
-      return this.authorize(function (user) {
-        return _this.data.user_id == user.id;
-      }); //return this.data.user_id == window.App.user.id;
     }
   },
   methods: {
     update: function update() {
-      var _this2 = this;
+      var _this = this;
 
       axios.patch('/replies/' + this.data.id, {
         body: this.body
@@ -3632,7 +3626,7 @@ __webpack_require__.r(__webpack_exports__);
         flash(error.response.data, 'danger');
       }).then(function (_ref) {
         var data = _ref.data;
-        _this2.editing = false;
+        _this.editing = false;
         flash('Updated!');
       });
     },
@@ -62102,7 +62096,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "card-footer d-flex" }, [
-        _vm.canUpdate
+        _vm.authorize("updateReply", _vm.reply)
           ? _c("div", [
               _c(
                 "button",
@@ -74438,10 +74432,20 @@ module.exports = function(module) {
  */
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
-Vue.prototype.authorize = function (handler) {
-  //Additional admin privileges here.
-  var user = window.App.user;
-  return user ? handler(user) : false;
+var authorizations = __webpack_require__(/*! ./authorizations */ "./resources/js/authorizations.js");
+
+Vue.prototype.authorize = function () {
+  if (!window.App.signedIn) return false;
+
+  for (var _len = arguments.length, params = new Array(_len), _key = 0; _key < _len; _key++) {
+    params[_key] = arguments[_key];
+  }
+
+  if (typeof params[0] === 'string') {
+    return authorizations[params[0]](params[1]);
+  }
+
+  return params[0](window.App.user);
 };
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
@@ -74470,6 +74474,23 @@ Vue.component('thread-view', __webpack_require__(/*! ./pages/Thread.vue */ "./re
 var app = new Vue({
   el: '#app'
 });
+
+/***/ }),
+
+/***/ "./resources/js/authorizations.js":
+/*!****************************************!*\
+  !*** ./resources/js/authorizations.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var user = window.App.user;
+var authorizations = {
+  updateReply: function updateReply(reply) {
+    return reply.user_id === user.id;
+  }
+};
+module.exports = authorizations;
 
 /***/ }),
 
