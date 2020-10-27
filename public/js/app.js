@@ -3377,11 +3377,6 @@ __webpack_require__.r(__webpack_exports__);
       body: ''
     };
   },
-  computed: {
-    signedIn: function signedIn() {
-      return window.App.signedIn;
-    }
-  },
   mounted: function mounted() {
     $('#body').atwho({
       at: "@",
@@ -3595,47 +3590,51 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['data'],
+  props: ['reply'],
   components: {
     Favorite: _Favorite_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
     return {
       editing: false,
-      id: this.data.id,
-      body: this.data.body,
-      isBest: false,
-      reply: this.data
+      id: this.id,
+      body: this.reply.body,
+      isBest: this.reply.isBest
     };
   },
   computed: {
     ago: function ago() {
-      return moment__WEBPACK_IMPORTED_MODULE_1___default()(this.data.created_at).fromNow();
-    },
-    signedIn: function signedIn() {
-      return window.App.signedIn;
+      return moment__WEBPACK_IMPORTED_MODULE_1___default()(this.reply.created_at).fromNow();
     }
+  },
+  created: function created() {
+    var _this = this;
+
+    window.events.$on('best-reply-selected', function (id) {
+      _this.isBest = id === _this.id;
+    });
   },
   methods: {
     update: function update() {
-      var _this = this;
+      var _this2 = this;
 
-      axios.patch('/replies/' + this.data.id, {
+      axios.patch('/replies/' + this.id, {
         body: this.body
       })["catch"](function (error) {
         flash(error.response.data, 'danger');
       }).then(function (_ref) {
         var data = _ref.data;
-        _this.editing = false;
+        _this2.editing = false;
         flash('Updated!');
       });
     },
     destroy: function destroy() {
-      axios["delete"]('/replies/' + this.data.id);
-      this.$emit('deleted', this.data.id);
+      axios["delete"]('/replies/' + this.id);
+      this.$emit('deleted', this.id);
     },
     markBestReply: function markBestReply() {
-      this.isBest = true;
+      axios.post('/replies/' + this.id + '/best');
+      window.events.$emit('best-reply-selected', this.id);
     }
   }
 });
@@ -61969,7 +61968,7 @@ var render = function() {
           { key: reply.id },
           [
             _c("reply", {
-              attrs: { data: reply },
+              attrs: { reply: reply },
               on: {
                 deleted: function($event) {
                   return _vm.remove(index)
@@ -62029,8 +62028,8 @@ var render = function() {
             [
               _c("h5", { staticClass: "mb-0" }, [
                 _c("a", {
-                  attrs: { href: "/profiles/" + _vm.data.owner.name },
-                  domProps: { textContent: _vm._s(_vm.data.owner.name) }
+                  attrs: { href: "/profiles/" + _vm.reply.owner.name },
+                  domProps: { textContent: _vm._s(_vm.reply.owner.name) }
                 }),
                 _vm._v("\n                said "),
                 _c("span", { domProps: { textContent: _vm._s(_vm.ago) } }),
@@ -62038,7 +62037,11 @@ var render = function() {
               ]),
               _vm._v(" "),
               _vm.signedIn
-                ? _c("div", [_c("favorite", { attrs: { reply: _vm.data } })], 1)
+                ? _c(
+                    "div",
+                    [_c("favorite", { attrs: { reply: _vm.reply } })],
+                    1
+                  )
                 : _vm._e()
             ]
           )
@@ -62095,50 +62098,47 @@ var render = function() {
           : _c("div", { domProps: { innerHTML: _vm._s(_vm.body) } })
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "card-footer d-flex" }, [
-        _vm.authorize("updateReply", _vm.reply)
-          ? _c("div", [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-warning btn-sm mr-2",
-                  on: {
-                    click: function($event) {
-                      _vm.editing = true
-                    }
-                  }
-                },
-                [_vm._v("Edit")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-danger btn-sm",
-                  on: { click: _vm.destroy }
-                },
-                [_vm._v("Delete")]
-              )
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: !_vm.isBest,
-                expression: "! isBest"
-              }
-            ],
-            staticClass: "btn btn-default border btn-sm ml-auto",
-            on: { click: _vm.markBestReply }
-          },
-          [_vm._v("Best Reply?")]
-        )
-      ])
+      _vm.authorize("owns", _vm.reply) ||
+      _vm.authorize("owns", _vm.reply.thread)
+        ? _c("div", { staticClass: "card-footer d-flex" }, [
+            _vm.authorize("owns", _vm.reply)
+              ? _c("div", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-warning btn-sm mr-2",
+                      on: {
+                        click: function($event) {
+                          _vm.editing = true
+                        }
+                      }
+                    },
+                    [_vm._v("Edit")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger btn-sm",
+                      on: { click: _vm.destroy }
+                    },
+                    [_vm._v("Delete")]
+                  )
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.authorize("owns", _vm.reply.thread)
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-default border btn-sm ml-auto",
+                    on: { click: _vm.markBestReply }
+                  },
+                  [_vm._v("Best Reply?")]
+                )
+              : _vm._e()
+          ])
+        : _vm._e()
     ]
   )
 }
@@ -74448,6 +74448,8 @@ Vue.prototype.authorize = function () {
   return params[0](window.App.user);
 };
 
+Vue.prototype.signedIn = window.App.signedIn;
+
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 /**
  * The following block of code may be used to automatically register your
@@ -74486,8 +74488,16 @@ var app = new Vue({
 
 var user = window.App.user;
 var authorizations = {
-  updateReply: function updateReply(reply) {
-    return reply.user_id === user.id;
+  // updateReply (reply) {
+  //     return reply.user_id === user.id;
+  // },
+  //
+  // updateThread (thread) {
+  //     return thread.user_id === user.id;
+  // },
+  owns: function owns(model) {
+    var prop = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'user.id';
+    return model[prop] === user.id;
   }
 };
 module.exports = authorizations;
