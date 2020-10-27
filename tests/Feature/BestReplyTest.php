@@ -6,6 +6,7 @@ use App\Reply;
 use App\Thread;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class BestReplyTest extends TestCase
@@ -42,5 +43,21 @@ class BestReplyTest extends TestCase
         $this->postJson(route('best-replies.store', $replies[1]->id))->assertStatus(403);
 
         $this->assertFalse($replies[1]->fresh()->isBest());
+    }
+
+    /** @test */
+    public function if_a_best_reply_is_deleted_then_the_thread_is_properly_updated_to_reflect_that()
+    {
+        //DB::statement('PRAGMA foreign_keys=on');
+
+        $this->signIn();
+
+        $reply = factory(Reply::class)->create(['user_id' => auth()->user()->id]);
+
+        $reply->thread->markBestReply($reply);
+
+        $this->deleteJson(route('replies.destroy', $reply));
+
+        $this->assertNull($reply->thread->fresh()->best_reply_id);
     }
 }
