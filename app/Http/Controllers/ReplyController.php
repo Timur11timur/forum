@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreatePostRequest;
 use App\Reply;
 use App\Thread;
+use http\Env\Response;
 
 /**
  * Class ReplyController
@@ -33,6 +34,10 @@ class ReplyController extends Controller
      */
     public function store($channel, Thread $thread, CreatePostRequest $form)
     {
+        if($thread->locked) {
+            return response('Thread is locked', 422);
+        }
+
         $reply = $thread->addReply([
             'body' => request('body'),
             'user_id' => auth()->user()->id
