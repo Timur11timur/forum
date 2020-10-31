@@ -11,6 +11,10 @@ let authorizations = {
 
     owns (model, prop = 'user.id') {
         return model[prop] === user.id;
+    },
+
+    isAdmin() {
+        return ['JohnDoe', 'JaneDoe'].includes(user.name);
     }
 };
 

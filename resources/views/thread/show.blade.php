@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <thread-view :initial-replies-count="{{ $thread->replies_count }}" inline-template>
+    <thread-view :data-replies-count="{{ $thread->replies_count }}" :data-locked="{{ $thread->locked }}" inline-template>
         <div class="container">
             <div class="row justify-content-between">
                 <div class="col-md-8">
@@ -44,7 +44,9 @@
                                 by <a href="#">{{ $thread->creator->name }}</a>, and currently
                                 has <span v-text="repliesCount"></span> {{ Str::plural('comment', $thread->replies_count) }}.</p>
                             <p>
-                                <subscribe-button :active="{{ json_encode($thread->isSubscribedTo) }}"></subscribe-button>
+                                <subscribe-button :active="{{ json_encode($thread->isSubscribedTo) }}" v-if="signedIn"></subscribe-button>
+
+                                <button class="btn btn-default border" v-if="authorize('isAdmin') && ! locked" @click="locked = true">Lock</button>
                             </p>
                         </div>
                     </div>
