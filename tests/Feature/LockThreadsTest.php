@@ -40,7 +40,7 @@ class LockThreadsTest extends TestCase
     {
         $this->signIn(factory(User::class)->states('administrator')->create());
 
-        $thread = factory(Thread::class)->create(['user_id' => auth()->id(), 'locked' => false]);
+        $thread = factory(Thread::class)->create(['user_id' => auth()->id(), 'locked' => true]);
 
         $this->delete(route('locked-threads.destroy', $thread));
 
