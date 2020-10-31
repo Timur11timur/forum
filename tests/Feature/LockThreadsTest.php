@@ -36,13 +36,23 @@ class LockThreadsTest extends TestCase
     }
 
     /** @test */
+    public function administrators_can_unlock_threads()
+    {
+        $this->signIn(factory(User::class)->states('administrator')->create());
+
+        $thread = factory(Thread::class)->create(['user_id' => auth()->id(), 'locked' => false]);
+
+        $this->delete(route('locked-threads.destroy', $thread));
+
+        $this->assertFalse($thread->fresh()->locked, 'Failed asserting that the thread was unlocked.');
+    }
+
+    /** @test */
     public function once_locked_a_thread_may_not_received_new_replies()
     {
         $this->signIn();
 
-        $thread = factory(Thread::class)->create();
-
-        $thread->lock();
+        $thread = factory(Thread::class)->create(['locked' => true]);
 
         $this->post($thread->path() . '/replies', [
             'body' => 'Foobar',
