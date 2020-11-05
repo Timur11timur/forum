@@ -3600,14 +3600,14 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       editing: false,
-      id: this.id,
+      id: this.reply.id,
       body: this.reply.body,
       isBest: this.reply.isBest
     };
   },
   computed: {
     ago: function ago() {
-      return moment__WEBPACK_IMPORTED_MODULE_1___default()(this.reply.created_at).fromNow();
+      return moment__WEBPACK_IMPORTED_MODULE_1___default()(this.reply.created_at).fromNow() + '...';
     }
   },
   created: function created() {
@@ -3745,7 +3745,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       repliesCount: this.thread.replies_count,
-      locked: this.thread.locked
+      locked: this.thread.locked,
+      editing: false
     };
   },
   methods: {
@@ -61971,7 +61972,6 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "p-2" },
     [
       _vm._l(_vm.items, function(reply, index) {
         return _c(
@@ -61997,7 +61997,7 @@ var render = function() {
       }),
       _vm._v(" "),
       _vm.$parent.locked
-        ? _c("p", [
+        ? _c("p", { staticClass: "px-3 py-2" }, [
             _vm._v(
               "\n        This thread has been locked. No more replies are allowed.\n    "
             )

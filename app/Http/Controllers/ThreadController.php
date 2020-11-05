@@ -58,11 +58,10 @@ class ThreadController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
      * @param Recaptcha $recaptcha
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request, Recaptcha $recaptcha)
+    public function store(Recaptcha $recaptcha)
     {
         request()->validate([
             'title' => 'required|spamfree',

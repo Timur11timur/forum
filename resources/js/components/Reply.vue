@@ -48,7 +48,7 @@
         data() {
             return {
                 editing: false,
-                id: this.id,
+                id: this.reply.id,
                 body: this.reply.body,
                 isBest: this.reply.isBest,
             };
@@ -56,7 +56,7 @@
 
         computed: {
             ago() {
-                return moment(this.reply.created_at).fromNow();
+                return moment(this.reply.created_at).fromNow() + '...';
             }
         },
 
