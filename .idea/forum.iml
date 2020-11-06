@@ -5,6 +5,18 @@
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" packagePrefix="Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/app" isTestSource="false" packagePrefix="App\" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea/codeStyles" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea/commandlinetools" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/framework/cache/data/08" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/framework/cache/data/0f" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/framework/cache/data/1c" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/framework/cache/data/35" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/framework/cache/data/64" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/framework/cache/data/a3" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/framework/cache/data/a8" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/framework/cache/data/ef" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/framework/testing/disks" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/asm89/stack-cors" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/barryvdh/laravel-debugbar" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/brick/math" />
