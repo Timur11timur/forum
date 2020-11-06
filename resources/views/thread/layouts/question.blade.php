@@ -1,21 +1,21 @@
 <div class="card" v-if="editing">
     <div class="card-header py-1">
         <span class="d-flex align-items-center">
-            <input type="text" value="{{ $thread->title }}" class="form-control">
+            <input type="text" class="form-control" v-model="form.title">
         </span>
     </div>
 
     <div class="card-body">
         <div class="form-group">
-            <textarea rows="10" class="form-control">{{ $thread->body }}</textarea>
+            <textarea rows="10" class="form-control" v-model="form.body"></textarea>
         </div>
     </div>
 
     <div class="card-footer d-flex justify-content-between align-items-center py-1">
         <div>
             <button class="btn border btn-default btn-sm" @click="editing = true" v-show="! editing">Edit</button>
-            <button class="btn border btn-primary btn-sm" @click="">Update</button>
-            <button class="btn border btn-default btn-sm" @click="editing = false">Cancel</button>
+            <button class="btn border btn-primary btn-sm" @click="update">Update</button>
+            <button class="btn border btn-default btn-sm" @click="cancel">Cancel</button>
         </div>
 
         @can ('update', $thread)
@@ -35,13 +35,12 @@
                  alt="{{ $thread->creator->name }}" width="25" height="25" class="mr-2">
             <span>
                 <a href="{{ route('profile', $thread->creator) }}">{{ $thread->creator->name }}</a> posted:
-                {{ $thread->title }}
+                <span v-text="form.title"></span>
             </span>
         </span>
     </div>
 
-    <div class="card-body">
-        {{ $thread->body }}
+    <div class="card-body" v-text="form.body">
     </div>
 
     <div class="card-footer py-1">
