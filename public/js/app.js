@@ -3746,35 +3746,38 @@ __webpack_require__.r(__webpack_exports__);
     return {
       repliesCount: this.thread.replies_count,
       locked: this.thread.locked,
-      editing: false,
-      form: {
-        title: this.thread.title,
-        body: this.thread.body
-      }
+      title: this.thread.title,
+      body: this.thread.body,
+      form: {},
+      editing: false
     };
+  },
+  created: function created() {
+    this.resetForm();
   },
   methods: {
     toggleLock: function toggleLock() {
-      axios[this.locked ? 'delete' : 'post']('/locked-threads/' + this.thread.slug);
+      var uri = '/locked-threads/${this.thread.slug}';
+      axios[this.locked ? 'delete' : 'post'](uri);
       this.locked = !this.locked;
     },
-    cancel: function cancel() {
+    update: function update() {
+      var _this = this;
+
+      var uri = '/threads/${this.thread.channel.slug}/${this.thread.slug}';
+      axios.patch(uri, this.form).then(function () {
+        _this.editing = false;
+        _this.title = _this.form.title;
+        _this.body = _this.form.body;
+        flash('Your thread has been updated.');
+      });
+    },
+    resetForm: function resetForm() {
       this.form = {
         title: this.thread.title,
         body: this.thread.body
       };
       this.editing = false;
-    },
-    update: function update() {
-      var _this = this;
-
-      axios.patch('/threads/' + this.thread.channel.slug + '/' + this.thread.slug, {
-        title: this.form.title,
-        body: this.form.body
-      }).then(function () {
-        _this.editing = false;
-        flash('Your thread has been updated.');
-      });
     }
   }
 });
@@ -74526,14 +74529,7 @@ var app = new Vue({
 /***/ (function(module, exports) {
 
 var user = window.App.user;
-var authorizations = {
-  // updateReply (reply) {
-  //     return reply.user_id === user.id;
-  // },
-  //
-  // updateThread (thread) {
-  //     return thread.user_id === user.id;
-  // },
+module.exports = {
   owns: function owns(model) {
     var prop = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'user.id';
     return model[prop] === user.id;
@@ -74542,7 +74538,6 @@ var authorizations = {
     return ['JohnDoe', 'JaneDoe'].includes(user.name);
   }
 };
-module.exports = authorizations;
 
 /***/ }),
 
@@ -75419,8 +75414,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/timur/Sites/forum/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/timur/Sites/forum/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/forum/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/forum/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -15,7 +15,7 @@
         <div>
             <button class="btn border btn-default btn-sm" @click="editing = true" v-show="! editing">Edit</button>
             <button class="btn border btn-primary btn-sm" @click="update">Update</button>
-            <button class="btn border btn-default btn-sm" @click="cancel">Cancel</button>
+            <button class="btn border btn-default btn-sm" @click="resetForm">Cancel</button>
         </div>
 
         @can ('update', $thread)
@@ -35,15 +35,14 @@
                  alt="{{ $thread->creator->name }}" width="25" height="25" class="mr-2">
             <span>
                 <a href="{{ route('profile', $thread->creator) }}">{{ $thread->creator->name }}</a> posted:
-                <span v-text="form.title"></span>
+                <span v-text="title"></span>
             </span>
         </span>
     </div>
 
-    <div class="card-body" v-text="form.body">
-    </div>
+    <div class="card-body" v-text="body"></div>
 
-    <div class="card-footer py-1">
+    <div class="card-footer py-1" v-if="authorize('owns', thread)">
         <button class="btn border btn-default btn-sm" @click="editing = true">Edit</button>
     </div>
 </div>

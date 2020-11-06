@@ -78,7 +78,7 @@ class User extends Authenticatable
 
     public function getAvatarPathAttribute($avatar)
     {
-        return asset('storage/' . ($avatar ?: 'avatars/default.jpg'));
+        return asset($avatar ?: 'images/avatars/default.png');
     }
 
     public function visitedThreadCacheKey($thread)
