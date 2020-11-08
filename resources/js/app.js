@@ -3,9 +3,11 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-
+import InstantSearch from 'vue-instantsearch';
 
 window.Vue = require('vue');
+
+Vue.use(InstantSearch);
 
 let authorizations = require('./authorizations');
 
@@ -41,6 +43,7 @@ Vue.component('user-notifications', require('./components/UserNotifications.vue'
 Vue.component('avatar-form', require('./components/AvatarForm.vue').default);
 
 Vue.component('thread-view', require('./pages/Thread.vue').default);
+Vue.component('search-view', require('./pages/Search.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
