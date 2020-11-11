@@ -1,3 +1,4 @@
+{{--Editing the thread--}}
 <div class="card" v-if="editing">
     <div class="card-header py-1">
         <span class="d-flex align-items-center">
@@ -28,6 +29,7 @@
     </div>
 </div>
 
+{{--Viewing the thread--}}
 <div class="card" v-else>
     <div class="card-header d-flex justify-content-between align-items-center py-1">
         <span class="d-flex align-items-center">
