@@ -32,7 +32,7 @@
             },
 
             update() {
-                let uri = '/threads/${this.thread.channel.slug}/${this.thread.slug}';
+                let uri = '/threads/' + this.thread.channel.slug + '/' + this.thread.slug;
 
                 axios.patch(uri, this.form).then(() => {
                     this.editing = false;

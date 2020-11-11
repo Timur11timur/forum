@@ -15,6 +15,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.0/trix.min.css" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
